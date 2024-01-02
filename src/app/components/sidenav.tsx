@@ -16,7 +16,11 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import { FaBell, FaClipboardCheck, FaRss } from "react-icons/fa";
+import { RiHandCoinFill } from "react-icons/ri";
 import { AiFillGift } from "react-icons/ai";
+import { FcCollaboration } from "react-icons/fc";
+import { FaGift } from "react-icons/fa";
+import { IoStorefront } from "react-icons/io5";
 import { BsGearFill } from "react-icons/bs";
 import { FiMenu, FiSearch } from "react-icons/fi";
 import { HiCode, HiCollection } from "react-icons/hi";
@@ -95,30 +99,11 @@ export default function App() {
                 color="gray.600"
                 aria-label="Main Navigation"
             >
-                <NavItem icon={MdHome}>Home</NavItem>
-                <NavItem icon={FaRss}>Articles</NavItem>
-                <NavItem icon={HiCollection}>Collections</NavItem>
-                <NavItem icon={FaClipboardCheck}>Checklists</NavItem>
-                <NavItem icon={HiCode} onClick={integrations.onToggle}>
-                    Integrations
-                    <Icon
-                        as={MdKeyboardArrowRight}
-                        ml="auto"
-                    // transform={integrations.isOpen && "rotate(90deg)"}
-                    />
-                </NavItem>
-                <Collapse in={integrations.isOpen}>
-                    <NavItem pl="12" py="2">
-                        Shopify
-                    </NavItem>
-                    <NavItem pl="12" py="2">
-                        Slack
-                    </NavItem>
-                    <NavItem pl="12" py="2">
-                        Zapier
-                    </NavItem>
-                </Collapse>
-                <NavItem icon={AiFillGift}>Changelog</NavItem>
+                <NavItem icon={MdHome}>Dashboard</NavItem>
+                <NavItem icon={RiHandCoinFill}>Points</NavItem>
+                <NavItem icon={IoStorefront}>Store</NavItem>
+                <NavItem icon={FcCollaboration}>Referal</NavItem>
+                <NavItem icon={FaGift}>Rewards</NavItem>
                 <NavItem icon={BsGearFill}>Settings</NavItem>
             </Flex>
         </Box>

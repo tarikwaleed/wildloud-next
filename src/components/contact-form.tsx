@@ -19,7 +19,7 @@ export function ContactForm() {
           width="300"
         />
         <h2 className="text-3xl font-bold text-center mb-4">Contact Us</h2>
-        <p className="text-center text-sm mb-8">Have any questions or suggestion? We'd love to hear from you.</p>
+        <p className="text-center text-sm mb-8">Have any questions or suggestion? We&apos;d love to hear from you.</p>
       </div>
       <form className="space-y-6">
         <div>

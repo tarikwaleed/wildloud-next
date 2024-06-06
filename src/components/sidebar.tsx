@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ICONS_GREEN, ICONS_GRAY } from '@/lib/colors'
 
 export default function SideBar() {
-    const [selectedItem, setSelectedItem] = useState<string>('');
+    const [selectedItem, setSelectedItem] = useState<string>('dashboard');
 
     const handleItemClick = (item: string) => {
         setSelectedItem(item);

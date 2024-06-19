@@ -3,16 +3,47 @@
 * @see https://v0.dev/t/SdkfTGcZXoT
 * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
 */
+"use client"
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
+import { useEffect, useRef, useState } from "react";
 
 export function HomeSection2() {
+  const [isLinkOpened, setIsLinkOpened] = useState(false);
+  const [timer, setTimer] = useState(null);
+  const activityTimeout = useRef<NodeJS.Timeout | null>(null);
+  useEffect(() => {
+    if (isLinkOpened) {
+      console.log('User opened the video link');
+      activityTimeout.current = setTimeout(() => {
+        console.log('User has been on the page for 30 seconds after opening the link');
+      }, 5000);
+    }
+
+    return () => {
+      if (activityTimeout.current) {
+        clearTimeout(activityTimeout.current);
+      }
+    };
+  }, [isLinkOpened]);
+
+  const handleLinkClick = () => {
+    setIsLinkOpened(true);
+  };
   return (
     <div className="bg-white p-8">
       <h2 className="text-3xl font-bold mb-6">Your Submits</h2>
-      <div className="grid grid-cols-3 gap-4 items-end">
+      <a
+        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={handleLinkClick}
+      >
+        Watch Video
+      </a>
+      {/* <div className="grid grid-cols-3 gap-4 items-end">
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-900" htmlFor="type">
             Type
@@ -30,8 +61,8 @@ export function HomeSection2() {
         </div>
         <Input id="url-account" placeholder="Url/account" />
         <Button className="bg-[#34D399] text-white">Submit</Button>
-      </div>
-      <div className="grid grid-cols-3 gap-4 items-center mt-4">
+      </div> */}
+      {/* <div className="grid grid-cols-3 gap-4 items-center mt-4">
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-900" htmlFor="total-clicks">
             Total Clicks
@@ -51,7 +82,7 @@ export function HomeSection2() {
           </div>
         </div>
         <Input id="points" placeholder="Points" />
-      </div>
+      </div> */}
     </div>
   )
 }

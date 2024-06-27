@@ -4,6 +4,8 @@ import { Alexandria as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import ConvexClientProvider from "./ConvexClientProvider";
 import { ClerkProvider } from '@clerk/nextjs'
+import { PrimeReactProvider } from 'primereact/api';
+
 
 const fontSans = FontSans({
   subsets: ["arabic"],
@@ -25,12 +27,14 @@ export default function RootLayout({
         "min-h-screen bg-gray-50 font-sans antialiased",
         fontSans.className
       )}>
-        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} >
-          <ConvexClientProvider >
-            {children}
-          </ConvexClientProvider>
-        </ClerkProvider>
+        <PrimeReactProvider>
+          <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} >
+            <ConvexClientProvider >
+              {children}
+            </ConvexClientProvider>
+          </ClerkProvider>
+        </PrimeReactProvider>
       </body>
-    </html>
+    </html >
   );
 }

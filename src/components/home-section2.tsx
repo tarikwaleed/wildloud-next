@@ -7,13 +7,42 @@
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
 import { useEffect, useRef, useState } from "react";
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { ProgressSpinner } from 'primereact/progressspinner';
+const formSchema = z.object({
+  url: z.string().url(),
+  platform: z.string(),
+})
 export function HomeSection2() {
   const [isLinkOpened, setIsLinkOpened] = useState(false);
   const [timer, setTimer] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const activityTimeout = useRef<NodeJS.Timeout | null>(null);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  })
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true)
+    setTimeout(() => {
+      console.log(values)
+      setIsSubmitting(false)
+    }, 1000);
+
+    // form.reset()
+  }
   useEffect(() => {
     if (isLinkOpened) {
       console.log('User opened the video link');
@@ -35,15 +64,63 @@ export function HomeSection2() {
   return (
     <div className="bg-white p-8">
       <h2 className="text-3xl font-bold mb-6">Your Submits</h2>
-      <a
-        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={handleLinkClick}
-      >
-        Watch Video
-      </a>
-      {/* <div className="grid grid-cols-3 gap-4 items-end">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="url"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>url</FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="platform"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Platform</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Platform" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="fb">Facebook</SelectItem>
+                    <SelectItem value="yt">Youtube</SelectItem>
+                    <SelectItem value="x">X</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex flex-row justify-between">
+            {!isSubmitting ? (
+              <Button type="submit">
+                Submit
+              </Button>
+            ) :
+              <>
+                <Button >
+                  <ProgressSpinner
+                    style={{ width: '50px', height: '50px' }}
+                    animationDuration=".4s"
+                  />
+                </Button>
+              </>
+            }
+          </div>
+        </form>
+      </Form>
+      {/*
+      <div className="grid grid-cols-3 gap-4 items-end">
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-900" htmlFor="type">
             Type
@@ -82,7 +159,8 @@ export function HomeSection2() {
           </div>
         </div>
         <Input id="points" placeholder="Points" />
-      </div> */}
+      </div>
+      */}
     </div>
   )
 }

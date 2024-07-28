@@ -14,6 +14,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { useMutation } from "convex/react";
+import { api } from "@/../convex/_generated/api";
+
+import { useUser } from "@clerk/clerk-react";
+
 import {
   Form,
   FormControl,
@@ -32,15 +37,31 @@ const formSchema = z.object({
 export function SubmitsForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<string>("");
+
+  const createSubmit = useMutation(api.submit.createOne);
+
+  const { user } = useUser();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    setTimeout(() => {
-      console.log(values);
-      setIsSubmitting(false);
-    }, 1000);
+    // setTimeout(() => {
+    //   console.log(values);
+    //   setIsSubmitting(false);
+    // }, 1000);
+
+    const createdSubmitId = await createSubmit({
+      url: values.url,
+      platform: values.platform,
+      impression: values.impression,
+      points: values.points,
+      userId: user?.id,
+    });
+
+    setIsSubmitting(false);
   }
 
   const platforms: { [key: string]: string } = {
@@ -48,6 +69,7 @@ export function SubmitsForm() {
     yt: "Youtube",
     x: "X",
   };
+
   const handleValueChange = (value) => {
     setSelectedPlatform(value);
   };
@@ -57,6 +79,7 @@ export function SubmitsForm() {
     yt: ["View", "Subscribe", "Like"],
     x: ["Retweet", "Favorite"],
   };
+
   const renderImpressionsOptions = () => {
     if (!selectedPlatform) return null;
     return impressionOptions[selectedPlatform].map((impression) => (
@@ -68,7 +91,7 @@ export function SubmitsForm() {
 
   return (
     <div className="bg-white p-8">
-      <h2 className="text-3xl font-bold mb-6">Your Submits</h2>
+      <h2 className="text-8xl font-black mb-6">Your Submits</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
